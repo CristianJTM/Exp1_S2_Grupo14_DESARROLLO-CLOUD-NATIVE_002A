@@ -2,6 +2,7 @@ package com.duoc.CloudLearningPlatform.controller;
 
 
 import com.duoc.CloudLearningPlatform.dto.InscripcionDTO;
+import com.duoc.CloudLearningPlatform.dto.InscripcionResumenDTO;
 import com.duoc.CloudLearningPlatform.model.Inscripcion;
 import com.duoc.CloudLearningPlatform.service.InscripcionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,12 @@ public class InscripcionController {
     @GetMapping("/curso/{id}")
     public ResponseEntity<List<Inscripcion>> findByCurso(@PathVariable Long id){
         return ResponseEntity.ok(inscripcionService.findByCurso(id));
+    }
+
+    //GET •	Consultar inscripciones por estudiante
+    @GetMapping("/estudiante/{id}")
+    public ResponseEntity<InscripcionResumenDTO> findByEstudiante(@PathVariable Long id) {
+        return ResponseEntity.ok(inscripcionService.findByEstudiante(id));
     }
 
     //POST • Registrar inscripción
