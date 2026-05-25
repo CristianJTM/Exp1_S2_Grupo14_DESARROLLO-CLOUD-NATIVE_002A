@@ -3,6 +3,7 @@ package com.duoc.CloudLearningPlatform.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -17,6 +18,12 @@ public class Curso {
 
     @NotBlank(message = "La descripcion es obligatoria")
     private String descripcion;
+
+    @NotNull(message = "La duración es obligatoria")
+    private Integer duracion; // Duración en minutos
+
+    @NotNull(message = "El costo es obligatorio")
+    private Double costo;
 
     @ManyToOne
     @JoinColumn(name = "profesor_id", nullable = false)
@@ -70,5 +77,21 @@ public class Curso {
 
     public void setProfesor(Usuario profesor) {
         this.profesor = profesor;
+    }
+
+    public  Integer getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(Integer duracion) {
+        this.duracion = duracion;
+    }
+
+    public Double getCosto() {
+        return costo;
+    }
+
+    public void setCosto(Double costo) {
+        this.costo = costo;
     }
 }

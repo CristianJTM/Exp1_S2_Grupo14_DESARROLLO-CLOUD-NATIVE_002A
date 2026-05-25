@@ -19,6 +19,7 @@ public class Usuario {
     @NotBlank(message = "El correo es obligatorio")
     private String correo;
 
+    @JsonIgnore
     @NotBlank(message = "La contraseña es obligatoria")
     private String contrasenia;
 
