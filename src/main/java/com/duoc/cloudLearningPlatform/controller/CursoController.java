@@ -20,25 +20,25 @@ public class CursoController {
 
     //GET •	Consultar todos los cursos
     @GetMapping
-    public ResponseEntity<List<Curso>> findAll(){
+    public ResponseEntity<List<CursoDTO>> findAll(){
         return ResponseEntity.ok(cursoService.findAll());
     }
 
     //GET •	Consultar cuso por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Curso> findById(@PathVariable Long id){
+    public ResponseEntity<CursoDTO> findById(@PathVariable Long id){
         return ResponseEntity.ok(cursoService.findById(id));
     }
 
     //POST • Registrar curso
     @PostMapping
-    public ResponseEntity<Curso> saveCurso(@RequestBody CursoDTO dto) {
+    public ResponseEntity<CursoDTO> saveCurso(@RequestBody CursoDTO dto) {
         return ResponseEntity.status(201).body(cursoService.saveCurso(dto));
     }
 
     //PUT •	Modificar curso
     @PutMapping("/{id}")
-    public ResponseEntity<Curso> updateCurso(@PathVariable Long id, @RequestBody CursoDTO dto) {
+    public ResponseEntity<CursoDTO> updateCurso(@PathVariable Long id, @RequestBody CursoDTO dto) {
         return ResponseEntity.ok(cursoService.updateCurso(id, dto));
     }
 

@@ -21,16 +21,20 @@ public class CursoService {
     @Autowired
     private CursoRepository cursoRepository;
 
-    public List<Curso> findAll(){
-        return cursoRepository.findAll();
+    public List<CursoDTO> findAll(){
+        return cursoRepository.findAll()
+                .stream()
+                .map(this::toDTO)
+                .toList();
     }
 
-    public Curso findById(Long id){
-        return cursoRepository.findById(id)
+    public CursoDTO findById(Long id){
+        Curso curso = cursoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Curso no encontrado"));
+        return toDTO(curso);
     }
 
-    public Curso saveCurso(CursoDTO cursoDTO){
+    public CursoDTO saveCurso(CursoDTO cursoDTO){
         Usuario profesor = usuarioRepository.findById(cursoDTO.getProfesorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Profesor no encontrado"));
 
@@ -41,10 +45,12 @@ public class CursoService {
         curso.setDuracion(cursoDTO.getDuracion());
         curso.setCosto(cursoDTO.getCosto());
 
-        return cursoRepository.save(curso);
+        cursoRepository.save(curso);
+
+        return toDTO(curso);
     }
 
-    public Curso updateCurso(Long id,CursoDTO cursoDTO){
+    public CursoDTO updateCurso(Long id,CursoDTO cursoDTO){
         Curso curso = cursoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Curso no encontrado"));
         curso.setNombre(cursoDTO.getNombre());
         curso.setDescripcion(cursoDTO.getDescripcion());
@@ -53,13 +59,27 @@ public class CursoService {
         curso.setProfesor(profesor);
         curso.setDuracion(cursoDTO.getDuracion());
         curso.setCosto(cursoDTO.getCosto());
-        return cursoRepository.save(curso);
+        cursoRepository.save(curso);
+        return toDTO(curso);
     }
 
     public void deleteCurso(Long id){
         Curso curso = cursoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Curso no encontrado"));
         cursoRepository.delete(curso);
+    }
+
+    private CursoDTO toDTO(Curso curso) {
+
+        CursoDTO dto = new CursoDTO();
+
+        dto.setNombre(curso.getNombre());
+        dto.setDescripcion(curso.getDescripcion());
+        dto.setDuracion(curso.getDuracion());
+        dto.setCosto(curso.getCosto());
+        dto.setProfesorId(curso.getProfesor().getId());
+
+        return dto;
     }
 
 
