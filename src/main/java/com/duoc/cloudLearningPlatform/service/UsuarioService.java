@@ -1,6 +1,7 @@
 package com.duoc.cloudLearningPlatform.service;
 
 import com.duoc.cloudLearningPlatform.dto.UsuarioDTO;
+import com.duoc.cloudLearningPlatform.dto.UsuarioResumenDTO;
 import com.duoc.cloudLearningPlatform.exception.ResourceNotFoundException;
 import com.duoc.cloudLearningPlatform.model.Usuario;
 import com.duoc.cloudLearningPlatform.repository.UsuarioRepository;
@@ -14,19 +15,19 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<UsuarioDTO> findAll(){
+    public List<UsuarioResumenDTO> findAll(){
         return usuarioRepository.findAll()
                 .stream()
                 .map(this::toDTO).toList();
     }
 
-    public UsuarioDTO findById(Long id){
+    public UsuarioResumenDTO findById(Long id){
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         return toDTO(usuario);
     }
 
-    public UsuarioDTO saveUsuario(UsuarioDTO usuarioDTO){
+    public UsuarioResumenDTO saveUsuario(UsuarioDTO usuarioDTO){
         Usuario usuario = new Usuario();
 
         usuario.setNombre(usuarioDTO.getNombre());
@@ -38,7 +39,7 @@ public class UsuarioService {
         return toDTO(usuario);
     }
 
-    public UsuarioDTO updateUsuario(Long id,UsuarioDTO usuarioDTO){
+    public UsuarioResumenDTO updateUsuario(Long id,UsuarioDTO usuarioDTO){
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         usuario.setNombre(usuarioDTO.getNombre());
         usuario.setCorreo(usuarioDTO.getCorreo());
@@ -55,9 +56,9 @@ public class UsuarioService {
         usuarioRepository.delete(usuario);
     }
 
-    private UsuarioDTO toDTO(Usuario usuario) {
+    private UsuarioResumenDTO toDTO(Usuario usuario) {
 
-        UsuarioDTO dto = new UsuarioDTO();
+        UsuarioResumenDTO dto = new UsuarioResumenDTO();
 
         dto.setNombre(usuario.getNombre());
         dto.setCorreo(usuario.getCorreo());

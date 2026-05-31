@@ -1,7 +1,7 @@
 package com.duoc.cloudLearningPlatform.controller;
 
 import com.duoc.cloudLearningPlatform.dto.UsuarioDTO;
-import com.duoc.cloudLearningPlatform.model.Usuario;
+import com.duoc.cloudLearningPlatform.dto.UsuarioResumenDTO;
 import com.duoc.cloudLearningPlatform.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,25 +18,25 @@ public class UsuarioController  {
 
     //GET •	Consultar todos los usuarios
     @GetMapping
-    public ResponseEntity<List<UsuarioDTO>> findAll(){
+    public ResponseEntity<List<UsuarioResumenDTO>> findAll(){
         return ResponseEntity.ok(usuarioService.findAll());
     }
 
     //GET •	Consultar usuario por ID
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id){
+    public ResponseEntity<UsuarioResumenDTO> findById(@PathVariable Long id){
         return ResponseEntity.ok(usuarioService.findById(id));
     }
 
     //POST • Registrar usuario
     @PostMapping
-    public ResponseEntity<UsuarioDTO> saveUsuario(@RequestBody UsuarioDTO dto) {
+    public ResponseEntity<UsuarioResumenDTO> saveUsuario(@RequestBody UsuarioDTO dto) {
         return ResponseEntity.status(201).body(usuarioService.saveUsuario(dto));
     }
 
     //PUT •	Modificar usuario
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> updateUsuario(@PathVariable Long id, @RequestBody UsuarioDTO dto) {
+    public ResponseEntity<UsuarioResumenDTO> updateUsuario(@PathVariable Long id, @RequestBody UsuarioDTO dto) {
         return ResponseEntity.ok(usuarioService.updateUsuario(id, dto));
     }
     //DELETE • Eliminar usuario
