@@ -14,16 +14,19 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<Usuario> findAll(){
-        return usuarioRepository.findAll();
+    public List<UsuarioDTO> findAll(){
+        return usuarioRepository.findAll()
+                .stream()
+                .map(this::toDTO).toList();
     }
 
-    public Usuario findById(Long id){
-        return usuarioRepository.findById(id)
+    public UsuarioDTO findById(Long id){
+        Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+        return toDTO(usuario);
     }
 
-    public Usuario saveUsuario(UsuarioDTO usuarioDTO){
+    public UsuarioDTO saveUsuario(UsuarioDTO usuarioDTO){
         Usuario usuario = new Usuario();
 
         usuario.setNombre(usuarioDTO.getNombre());
@@ -31,22 +34,35 @@ public class UsuarioService {
         usuario.setContrasenia(usuarioDTO.getContrasenia());
         usuario.setRol(usuarioDTO.getRol());
 
-        return usuarioRepository.save(usuario);
+        usuarioRepository.save(usuario);
+        return toDTO(usuario);
     }
 
-    public Usuario updateUsuario(Long id,UsuarioDTO usuarioDTO){
+    public UsuarioDTO updateUsuario(Long id,UsuarioDTO usuarioDTO){
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         usuario.setNombre(usuarioDTO.getNombre());
         usuario.setCorreo(usuarioDTO.getCorreo());
         usuario.setContrasenia(usuarioDTO.getContrasenia());
         usuario.setRol(usuarioDTO.getRol());
 
-        return usuarioRepository.save(usuario);
+        usuarioRepository.save(usuario);
+        return  toDTO(usuario);
     }
 
     public void deleteUsuario(Long id){
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         usuarioRepository.delete(usuario);
+    }
+
+    private UsuarioDTO toDTO(Usuario usuario) {
+
+        UsuarioDTO dto = new UsuarioDTO();
+
+        dto.setNombre(usuario.getNombre());
+        dto.setCorreo(usuario.getCorreo());
+        dto.setRol(usuario.getRol());
+
+        return dto;
     }
 }

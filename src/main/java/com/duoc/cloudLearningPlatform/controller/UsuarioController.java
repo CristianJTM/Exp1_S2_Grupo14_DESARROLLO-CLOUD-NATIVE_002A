@@ -18,25 +18,25 @@ public class UsuarioController  {
 
     //GET •	Consultar todos los usuarios
     @GetMapping
-    public ResponseEntity<List<Usuario>> findAll(){
+    public ResponseEntity<List<UsuarioDTO>> findAll(){
         return ResponseEntity.ok(usuarioService.findAll());
     }
 
     //GET •	Consultar usuario por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> findById(@PathVariable Long id){
+    public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id){
         return ResponseEntity.ok(usuarioService.findById(id));
     }
 
     //POST • Registrar usuario
     @PostMapping
-    public ResponseEntity<Usuario> saveUsuario(@RequestBody UsuarioDTO dto) {
+    public ResponseEntity<UsuarioDTO> saveUsuario(@RequestBody UsuarioDTO dto) {
         return ResponseEntity.status(201).body(usuarioService.saveUsuario(dto));
     }
 
     //PUT •	Modificar usuario
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody UsuarioDTO dto) {
+    public ResponseEntity<UsuarioDTO> updateUsuario(@PathVariable Long id, @RequestBody UsuarioDTO dto) {
         return ResponseEntity.ok(usuarioService.updateUsuario(id, dto));
     }
     //DELETE • Eliminar usuario
