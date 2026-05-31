@@ -19,31 +19,31 @@ public class EvaluacionController {
 
     //GET •	Consultar todas las evaluaciones
     @GetMapping
-    public ResponseEntity<List<Evaluacion>> findAll(){
+    public ResponseEntity<List<EvaluacionDTO>> findAll(){
         return ResponseEntity.ok(evaluacionService.findAll());
     }
 
     //GET •	Consultar evaluacion por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Evaluacion> findById(@PathVariable Long id){
+    public ResponseEntity<EvaluacionDTO> findById(@PathVariable Long id){
         return ResponseEntity.ok(evaluacionService.findById(id));
     }
 
     //GET •	Consultar evaluacion por curso
     @GetMapping("/curso/{id}")
-    public ResponseEntity<List<Evaluacion>> findByCurso(@PathVariable Long id){
+    public ResponseEntity<List<EvaluacionDTO>> findByCurso(@PathVariable Long id){
         return ResponseEntity.ok(evaluacionService.findByCurso(id));
     }
 
     //POST • Registrar evaluacion
     @PostMapping
-    public ResponseEntity<Evaluacion> saveEvaluacion(@RequestBody EvaluacionDTO dto) {
+    public ResponseEntity<EvaluacionDTO> saveEvaluacion(@RequestBody EvaluacionDTO dto) {
         return ResponseEntity.status(201).body(evaluacionService.saveEvaluacion(dto));
     }
 
     //PUT •	Modificar evaluacion
     @PutMapping("/{id}")
-    public ResponseEntity<Evaluacion> updateEvaluacion(@PathVariable Long id, @RequestBody EvaluacionDTO dto) {
+    public ResponseEntity<EvaluacionDTO> updateEvaluacion(@PathVariable Long id, @RequestBody EvaluacionDTO dto) {
         return ResponseEntity.ok(evaluacionService.updateEvaluacion(id, dto));
     }
 
