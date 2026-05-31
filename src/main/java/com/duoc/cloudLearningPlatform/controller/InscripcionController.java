@@ -20,7 +20,7 @@ public class InscripcionController {
 
     //GET •	Consultar inscripciones por curso
     @GetMapping("/curso/{id}")
-    public ResponseEntity<List<Inscripcion>> findByCurso(@PathVariable Long id){
+    public ResponseEntity<List<InscripcionDTO>> findByCurso(@PathVariable Long id){
         return ResponseEntity.ok(inscripcionService.findByCurso(id));
     }
 
@@ -32,7 +32,7 @@ public class InscripcionController {
 
     //POST • Registrar inscripción
     @PostMapping
-    public ResponseEntity<Inscripcion> saveInscripcion(@RequestBody InscripcionDTO dto) {
+    public ResponseEntity<InscripcionDTO> saveInscripcion(@RequestBody InscripcionDTO dto) {
         return ResponseEntity.status(201).body(inscripcionService.saveInscripcion(dto));
     }
 

@@ -2,10 +2,12 @@ package com.duoc.cloudLearningPlatform.service;
 
 
 import com.duoc.cloudLearningPlatform.dto.CursoResumenDTO;
+import com.duoc.cloudLearningPlatform.dto.EvaluacionDTO;
 import com.duoc.cloudLearningPlatform.dto.InscripcionDTO;
 import com.duoc.cloudLearningPlatform.dto.InscripcionResumenDTO;
 import com.duoc.cloudLearningPlatform.exception.ResourceNotFoundException;
 import com.duoc.cloudLearningPlatform.model.Curso;
+import com.duoc.cloudLearningPlatform.model.Evaluacion;
 import com.duoc.cloudLearningPlatform.model.Inscripcion;
 import com.duoc.cloudLearningPlatform.model.Usuario;
 import com.duoc.cloudLearningPlatform.repository.CursoRepository;
@@ -28,8 +30,9 @@ public class InscripcionService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<Inscripcion> findByCurso(Long cursoId){
-        return inscripcionRepository.findByCursoId(cursoId);
+    public List<InscripcionDTO> findByCurso(Long cursoId){
+        return inscripcionRepository.findByCursoId(cursoId)
+                .stream().map(this::toDTO).toList();
     }
 
     public InscripcionResumenDTO findByEstudiante(Long estudianteId){
@@ -57,7 +60,7 @@ public class InscripcionService {
         return inscripcionResumenDTO;
     }
 
-    public Inscripcion saveInscripcion(InscripcionDTO inscripcionDTO){
+    public InscripcionDTO saveInscripcion(InscripcionDTO inscripcionDTO){
         Curso curso = cursoRepository.findById(inscripcionDTO.getCursoId()).
                 orElseThrow(() -> new ResourceNotFoundException("Curso no encontrado"));
 
@@ -70,12 +73,24 @@ public class InscripcionService {
         inscripcion.setEstudiante(estudiante);
         inscripcion.setFechaInscripcion(inscripcionDTO.getFechaInscripcion());
 
-        return inscripcionRepository.save(inscripcion);
+        inscripcionRepository.save(inscripcion);
+        return  toDTO(inscripcion);
     }
 
     public void deleteInscripcion(Long id){
         Inscripcion inscripcion = inscripcionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Inscripcion no encontrada"));
         inscripcionRepository.delete(inscripcion);
+    }
+
+    private InscripcionDTO toDTO(Inscripcion inscripcion) {
+
+        InscripcionDTO dto = new InscripcionDTO();
+
+        dto.setFechaInscripcion(inscripcion.getFechaInscripcion());
+        dto.setEstudianteId(inscripcion.getEstudiante().getId());
+        dto.setCursoId(inscripcion.getCurso().getId());
+
+        return dto;
     }
 }
