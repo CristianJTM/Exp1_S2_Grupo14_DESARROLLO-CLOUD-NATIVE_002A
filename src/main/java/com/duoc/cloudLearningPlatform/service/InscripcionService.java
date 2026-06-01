@@ -43,7 +43,7 @@ public class InscripcionService {
     @Autowired
     private S3Repository s3Repository;
 
-    @Value("${aws.bucket-name}")
+    @Value("${aws.bucket.name}")
     private String bucketName;
 
     public List<InscripcionDTO> findByCurso(Long cursoId){
