@@ -86,7 +86,9 @@ public class S3RepositoryImpl implements S3Repository {
 
     @Override
     public void deleteObject(String bucketName, String fileKey){
-
+        if(!s3Client.doesObjectExist(bucketName, fileKey)){
+            throw new RuntimeException("Archivo no encontrado");
+        }
         s3Client.deleteObject(bucketName, fileKey);
     }
 
