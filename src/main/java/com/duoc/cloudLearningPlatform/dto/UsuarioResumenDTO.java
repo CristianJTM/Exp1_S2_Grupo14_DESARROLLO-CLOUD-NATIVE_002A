@@ -1,16 +1,26 @@
 package com.duoc.cloudLearningPlatform.dto;
 
 public class UsuarioResumenDTO {
+    private Long id;
     private String nombre;
     private String correo;
     private String rol;
 
     public UsuarioResumenDTO() {}
 
-    public UsuarioResumenDTO(String nombre, String correo, String rol) {
+    public UsuarioResumenDTO(Long id, String nombre, String correo, String rol) {
+        this.id = id;
         this.nombre = nombre;
         this.correo = correo;
         this.rol = rol;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
