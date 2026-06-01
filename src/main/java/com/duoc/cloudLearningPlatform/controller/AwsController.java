@@ -56,8 +56,8 @@ public class AwsController {
     }
 
     @DeleteMapping("/deleteObject")
-    public ResponseEntity<String> deleteFile(@RequestParam(value = "bucketName") String bucketName, @RequestParam(value = "fileName") String fileName){
-        awsService.deleteObject(bucketName,fileName);
+    public ResponseEntity<String> deleteFile(@RequestParam(value = "bucketName") String bucketName, @RequestParam(value = "fileKey") String fileKey){
+        awsService.deleteObject(bucketName,fileKey);
         return new ResponseEntity<>("File deleted",  HttpStatus.OK);
     }
 
