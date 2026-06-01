@@ -2,12 +2,10 @@ package com.duoc.cloudLearningPlatform.service;
 
 
 import com.duoc.cloudLearningPlatform.dto.CursoResumenDTO;
-import com.duoc.cloudLearningPlatform.dto.EvaluacionDTO;
 import com.duoc.cloudLearningPlatform.dto.InscripcionDTO;
 import com.duoc.cloudLearningPlatform.dto.InscripcionResumenDTO;
 import com.duoc.cloudLearningPlatform.exception.ResourceNotFoundException;
 import com.duoc.cloudLearningPlatform.model.Curso;
-import com.duoc.cloudLearningPlatform.model.Evaluacion;
 import com.duoc.cloudLearningPlatform.model.Inscripcion;
 import com.duoc.cloudLearningPlatform.model.Usuario;
 import com.duoc.cloudLearningPlatform.repository.CursoRepository;
@@ -16,6 +14,16 @@ import com.duoc.cloudLearningPlatform.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import java.nio.charset.StandardCharsets;
+
+
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
@@ -82,6 +90,57 @@ public class InscripcionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Inscripcion no encontrada"));
         inscripcionRepository.delete(inscripcion);
     }
+
+    private String generarContenidoResumen(Long id) {
+
+        InscripcionResumenDTO resumen = findByEstudiante(id);
+
+        StringBuilder contenido = new StringBuilder();
+
+        contenido.append("Resumen de Inscripción\n\n");
+        contenido.append("Estudiante: ")
+                .append(resumen.getEstudiante())
+                .append("\n\n");
+
+        contenido.append("Cursos:\n");
+
+        for (CursoResumenDTO curso : resumen.getCursos()) {
+
+            contenido.append("- ")
+                    .append(curso.getNombre())
+                    .append(" ($")
+                    .append(curso.getCosto())
+                    .append(")\n");
+        }
+
+        contenido.append("\nTotal: $")
+                .append(resumen.getTotal());
+
+        return contenido.toString();
+    }
+
+    public ResponseEntity<Resource> generarResumenArchivo(Long id) {
+
+        String contenido = generarContenidoResumen(id);
+
+        byte[] datos = contenido.getBytes(StandardCharsets.UTF_8);
+
+        ByteArrayResource resource = new ByteArrayResource(datos);
+
+        return ResponseEntity.ok()
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=resumen_" + id + ".txt"
+                )
+                .contentType(MediaType.TEXT_PLAIN)
+                .contentLength(datos.length)
+                .body(resource);
+    }
+
+    public String obtenerContenidoResumen(Long id) {
+        return generarContenidoResumen(id);
+    }
+
 
     private InscripcionDTO toDTO(Inscripcion inscripcion) {
 

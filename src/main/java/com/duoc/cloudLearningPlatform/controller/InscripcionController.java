@@ -8,6 +8,7 @@ import com.duoc.cloudLearningPlatform.service.InscripcionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.core.io.Resource;
 
 import java.util.List;
 
@@ -41,5 +42,11 @@ public class InscripcionController {
     public ResponseEntity<Void> deleteInscripcion(@PathVariable Long id){
         inscripcionService.deleteInscripcion(id);
         return ResponseEntity.noContent().build();
+    }
+
+    //GET • Generar informe por estudiante
+    @GetMapping("/estudiante/{id}/resumen")
+    public ResponseEntity<Resource> descargarResumen(@PathVariable Long id) {
+        return inscripcionService.generarResumenArchivo(id);
     }
 }
