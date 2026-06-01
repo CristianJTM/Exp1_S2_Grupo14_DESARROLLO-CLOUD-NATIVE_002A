@@ -49,4 +49,12 @@ public class InscripcionController {
     public ResponseEntity<Resource> descargarResumen(@PathVariable Long id) {
         return inscripcionService.generarResumenArchivo(id);
     }
+
+    //Post • Subir informe por estudiante
+    @PostMapping("/estudiante/{id}/subir-resumen")
+    public ResponseEntity<String> subirResumenAS3(@PathVariable Long id) {
+        return ResponseEntity.ok(
+                inscripcionService.subirResumenAS3(id)
+        );
+    }
 }

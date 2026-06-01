@@ -8,10 +8,9 @@ import com.duoc.cloudLearningPlatform.exception.ResourceNotFoundException;
 import com.duoc.cloudLearningPlatform.model.Curso;
 import com.duoc.cloudLearningPlatform.model.Inscripcion;
 import com.duoc.cloudLearningPlatform.model.Usuario;
-import com.duoc.cloudLearningPlatform.repository.CursoRepository;
-import com.duoc.cloudLearningPlatform.repository.InscripcionRepository;
-import com.duoc.cloudLearningPlatform.repository.UsuarioRepository;
+import com.duoc.cloudLearningPlatform.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import org.springframework.core.io.ByteArrayResource;
@@ -20,6 +19,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 
@@ -37,6 +39,12 @@ public class InscripcionService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private S3Repository s3Repository;
+
+    @Value("${aws.bucket.name}")
+    private String bucketName;
 
     public List<InscripcionDTO> findByCurso(Long cursoId){
         return inscripcionRepository.findByCursoId(cursoId)
@@ -139,6 +147,33 @@ public class InscripcionService {
 
     public String obtenerContenidoResumen(Long id) {
         return generarContenidoResumen(id);
+    }
+
+    public String subirResumenAS3(Long id) {
+
+        String contenido = generarContenidoResumen(id);
+
+        try {
+
+            String nombreArchivo = "resumen_" + id + ".txt";
+
+            File archivo = new File(nombreArchivo);
+
+            try (FileWriter writer = new FileWriter(archivo)) {
+                writer.write(contenido);
+            }
+
+            String rutaS3 = "resumenes/" + id + "/";
+
+            return s3Repository.uploadFile(
+                    bucketName,
+                    rutaS3 + nombreArchivo,
+                    archivo
+            );
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error al generar resumen", e);
+        }
     }
 
 
