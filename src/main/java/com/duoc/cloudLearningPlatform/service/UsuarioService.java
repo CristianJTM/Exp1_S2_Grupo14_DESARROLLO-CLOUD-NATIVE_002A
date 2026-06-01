@@ -60,6 +60,7 @@ public class UsuarioService {
 
         UsuarioResumenDTO dto = new UsuarioResumenDTO();
 
+        dto.setId(usuario.getId());
         dto.setNombre(usuario.getNombre());
         dto.setCorreo(usuario.getCorreo());
         dto.setRol(usuario.getRol());
