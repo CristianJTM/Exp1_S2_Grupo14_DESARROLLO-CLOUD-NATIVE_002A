@@ -51,7 +51,7 @@ public class InscripcionController {
     }
 
     //Post • Subir informe por estudiante
-    @PostMapping("/estudiante/{id}/subir-resumen")
+    @PostMapping("/estudiante/{id}/resumen/s3")
     public ResponseEntity<String> subirResumenAS3(@PathVariable Long id) {
         return ResponseEntity.ok(
                 inscripcionService.subirResumenAS3(id)
