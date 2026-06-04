@@ -1,5 +1,6 @@
 package com.duoc.cloudlearningplatform.controller;
 
+import com.duoc.cloudlearningplatform.dto.AssetDTO;
 import com.duoc.cloudlearningplatform.model.Asset;
 import com.duoc.cloudlearningplatform.service.AwsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +31,18 @@ public class AwsController {
     }
 
     @GetMapping("/listS3Files")
-    public ResponseEntity<List<Asset>> getS3Files(@RequestParam(value = "bucketName") String bucketName) throws IOException {
-        List<Asset> list = new ArrayList<>();
+        public ResponseEntity<List<AssetDTO>> getS3Files(
+            @RequestParam(value = "bucketName") String bucketName) {
+
+        List<AssetDTO> list = new ArrayList<>();
         HttpStatus status = HttpStatus.OK;
-        try{
+
+        try {
             list = awsService.getS3Files(bucketName);
-        } catch (Exception e){
+        } catch (Exception e) {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+
         return new ResponseEntity<>(list, status);
     }
 

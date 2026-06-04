@@ -1,5 +1,6 @@
 package com.duoc.cloudlearningplatform.service;
 
+import com.duoc.cloudlearningplatform.dto.AssetDTO;
 import com.duoc.cloudlearningplatform.model.Asset;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,7 +11,7 @@ public interface AwsService {
 
     String getS3FileContent(String bucketName, String fileName) throws IOException;
 
-    List<Asset> getS3Files(String bucketName) throws IOException;
+    List<AssetDTO> getS3Files(String bucketName) throws IOException;
 
     byte[] downloadFile(String bucketName, String fileName) throws IOException;
 

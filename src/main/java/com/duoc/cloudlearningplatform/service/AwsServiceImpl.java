@@ -2,6 +2,7 @@ package com.duoc.cloudlearningplatform.service;
 
 
 import com.amazonaws.util.StringUtils;
+import com.duoc.cloudlearningplatform.dto.AssetDTO;
 import com.duoc.cloudlearningplatform.model.Asset;
 import com.duoc.cloudlearningplatform.repository.S3Repository;
 import org.slf4j.Logger;
@@ -31,9 +32,12 @@ public class AwsServiceImpl implements AwsService {
     }
 
     @Override
-    public List<Asset> getS3Files(String bucket) {
+    public List<AssetDTO> getS3Files(String bucket) {
 
-        return s3Repository.listObjectsInBucket(bucket);
+        return s3Repository.listObjectsInBucket(bucket)
+                .stream()
+                .map(this::toDTO)
+                .toList();
     }
 
     public String getS3FileContent(String bucketName, String filenName) throws IOException {
@@ -88,5 +92,15 @@ public class AwsServiceImpl implements AwsService {
             log.error("Error converting multipartFile to file", e);
         }
         return convertedFile;
+    }
+
+    private AssetDTO toDTO(Asset asset) {
+
+        AssetDTO dto = new AssetDTO();
+
+        dto.setKey(asset.getKey());
+        dto.setUrl(asset.getUrl().toString());
+
+        return dto;
     }
 }
