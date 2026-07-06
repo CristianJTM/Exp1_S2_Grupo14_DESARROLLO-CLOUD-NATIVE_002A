@@ -60,20 +60,25 @@ jobs:
             # Descargar la última versión de la imagen
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cloud-learning-platform:latest
             # RabbitMQ
+            docker pull rabbitmq:3-management
+            docker network create cloud-network || true
             docker stop rabbitmq || true
             docker rm rabbitmq || true
       
             docker run -d \
             --name rabbitmq \
+            --network cloud-network \
             --restart unless-stopped \
             -p 5672:5672 \
             -p 15672:15672 \
-            rabbitmq:3-management 
+            rabbitmq:3-management
           
             # Parar y eliminar cualquier contenedor previo
             docker stop cloud-learning-platform || true && docker rm cloud-learning-platform || true
             # Iniciar el contenedor
-            docker run -d --name cloud-learning-platform -p 8080:8080\
+            docker run -d --name cloud-learning-platform \
+            --network cloud-network \
+            -p 8080:8080 \
             -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID}}" \
             -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY}}" \
             -e AWS_SESSION_TOKEN="${{ secrets.AWS_SESSION_TOKEN}}" \
