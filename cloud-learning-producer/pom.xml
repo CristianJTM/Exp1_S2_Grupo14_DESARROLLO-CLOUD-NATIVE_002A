@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.duoc</groupId>
-	<artifactId>CloudLearningPlatform</artifactId>
+	<artifactId>CloudLearningPlatform-Consumer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>CloudLearningPlatform</name>
+	<name>CloudLearningPlatform-Consumer</name>
 	<description>Validación de Plataforma de Aprendizaje en Línea</description>
 	<url/>
 	<licenses>
