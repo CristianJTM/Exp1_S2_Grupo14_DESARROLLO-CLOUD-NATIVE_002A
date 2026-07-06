@@ -3,6 +3,8 @@ package com.duoc.cloudlearningplatform.controller;
 
 import com.duoc.cloudlearningplatform.dto.InscripcionDTO;
 import com.duoc.cloudlearningplatform.dto.InscripcionResumenDTO;
+import com.duoc.cloudlearningplatform.model.ResumenInscripcion;
+import com.duoc.cloudlearningplatform.repository.ResumenInscripcionRepository;
 import com.duoc.cloudlearningplatform.service.InscripcionService;
 import com.duoc.cloudlearningplatform.service.RabbitMQProducer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class InscripcionController {
 
     @Autowired
     private RabbitMQProducer rabbitMQProducer;
+
+    @Autowired
+    private ResumenInscripcionRepository  resumenInscripcionRepository;
 
     //GET •	Consultar inscripciones por curso
     @GetMapping("/curso/{id}")
@@ -67,5 +72,10 @@ public class InscripcionController {
         rabbitMQProducer.enviarResumen(id);
 
         return ResponseEntity.ok("Resumen enviado a RabbitMQ");
+    }
+
+    @GetMapping("/resumenes")
+    public List<ResumenInscripcion> listar() {
+        return resumenInscripcionRepository.findAll();
     }
 }
