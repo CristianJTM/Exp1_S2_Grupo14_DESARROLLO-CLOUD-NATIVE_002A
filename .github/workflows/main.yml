@@ -59,13 +59,21 @@ jobs:
             echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
             # Descargar la última versión de la imagen
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cloud-learning-platform:latest
+            # RabbitMQ
+            docker stop rabbitmq || true
+            docker rm rabbitmq || true
+      
+            docker run -d \
+            --name rabbitmq \
+            --restart unless-stopped \
+            -p 5672:5672 \
+            -p 15672:15672 \
+            rabbitmq:3-management 
+          
             # Parar y eliminar cualquier contenedor previo
             docker stop cloud-learning-platform || true && docker rm cloud-learning-platform || true
             # Iniciar el contenedor
             docker run -d --name cloud-learning-platform -p 8080:8080\
-            -e DB_URL="${{ secrets.DB_URL }}" \
-            -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
-            -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
             -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID}}" \
             -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY}}" \
             -e AWS_SESSION_TOKEN="${{ secrets.AWS_SESSION_TOKEN}}" \
