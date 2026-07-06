@@ -27,7 +27,8 @@ jobs:
       # Paso 3: Construir la imagen de Docker
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/cloud-learning-platform:latest .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/cloud-learning-platform:latest \
+            ./cloud-learning-producer
 
       # Paso 4: Hacer push de la imagen a DockerHub
       - name: Push Docker Image
