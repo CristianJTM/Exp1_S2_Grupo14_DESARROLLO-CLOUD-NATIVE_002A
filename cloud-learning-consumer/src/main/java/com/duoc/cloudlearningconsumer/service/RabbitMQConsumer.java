@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
+import java.util.stream.Collectors;
 
 @Service
 public class RabbitMQConsumer {
@@ -51,6 +53,14 @@ public class RabbitMQConsumer {
             // Guardar en H2
             ResumenInscripcion entidad = new ResumenInscripcion();
             entidad.setEstudiante(resumen.getEstudiante());
+            String cursos = resumen.getCursos()
+                    .stream()
+                    .map(c -> c.getNombre() + " ($" + c.getCosto() + ")")
+                    .collect(Collectors.joining("\n"));
+            entidad.setCursos(cursos);
+
+            entidad.setFechaProcesamiento(new Date());
+
             entidad.setTotal(resumen.getTotal());
 
             repository.save(entidad);
