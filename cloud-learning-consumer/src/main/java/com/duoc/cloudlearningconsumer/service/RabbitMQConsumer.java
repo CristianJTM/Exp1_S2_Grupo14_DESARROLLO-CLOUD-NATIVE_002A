@@ -35,8 +35,13 @@ public class RabbitMQConsumer {
 
     public void consumirMensaje() {
 
-        InscripcionResumenDTO resumen =
-                (InscripcionResumenDTO) rabbitTemplate.receiveAndConvert(QUEUE);
+        Object mensaje = rabbitTemplate.receiveAndConvert(QUEUE);
+
+        if (mensaje == null) {
+            throw new RuntimeException("No existen mensajes en la cola.");
+        }
+
+        InscripcionResumenDTO resumen = (InscripcionResumenDTO) mensaje;
 
         if (resumen == null) {
             throw new RuntimeException("No existen mensajes en la cola.");
