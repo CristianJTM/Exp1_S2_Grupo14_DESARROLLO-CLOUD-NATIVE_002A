@@ -59,6 +59,7 @@ public class InscripcionService {
             throw new ResourceNotFoundException("Inscripcion no encontrada");
         }
 
+        inscripcionResumenDTO.setEstudianteId(inscripciones.get(0).getEstudiante().getId());
         inscripcionResumenDTO.setEstudiante(inscripciones.get(0).getEstudiante().getNombre());
 
         List<CursoResumenDTO> cursos = inscripciones.stream().map(inscripcion -> {
