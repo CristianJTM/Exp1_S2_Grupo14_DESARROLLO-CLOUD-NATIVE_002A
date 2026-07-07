@@ -1,10 +1,11 @@
 package com.duoc.cloudlearningconsumer.service;
 
-import com.duoc.cloudlearningconsumer.dto.*;
+import com.duoc.cloudlearningconsumer.dto.CursoResumenDTO;
+import com.duoc.cloudlearningconsumer.dto.InscripcionResumenDTO;
 import com.duoc.cloudlearningconsumer.model.ResumenInscripcion;
 import com.duoc.cloudlearningconsumer.repository.ResumenInscripcionRepository;
 import com.duoc.cloudlearningconsumer.repository.S3Repository;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,8 +14,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Date;
-import java.util.stream.Collectors;
 
 @Service
 public class RabbitMQConsumer {
@@ -23,6 +22,9 @@ public class RabbitMQConsumer {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private ResumenInscripcionRepository repository;
@@ -35,29 +37,32 @@ public class RabbitMQConsumer {
 
     public void consumirMensaje() {
 
-        Object mensaje = rabbitTemplate.receiveAndConvert(QUEUE);
+        try {
 
-        if (mensaje == null) {
-            throw new RuntimeException("No existen mensajes en la cola.");
+            String json = (String) rabbitTemplate.receiveAndConvert(QUEUE);
+
+            if (json == null) {
+                throw new RuntimeException("No existen mensajes en la cola.");
+            }
+
+            InscripcionResumenDTO resumen =
+                    objectMapper.readValue(json, InscripcionResumenDTO.class);
+
+            // Guardar en H2
+            ResumenInscripcion entidad = new ResumenInscripcion();
+            entidad.setEstudiante(resumen.getEstudiante());
+            entidad.setTotal(resumen.getTotal());
+
+            repository.save(entidad);
+
+            // Subir a S3
+            subirResumenAS3(resumen);
+
+            System.out.println("Resumen guardado correctamente.");
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error al procesar el mensaje RabbitMQ", e);
         }
-
-        InscripcionResumenDTO resumen = (InscripcionResumenDTO) mensaje;
-
-        if (resumen == null) {
-            throw new RuntimeException("No existen mensajes en la cola.");
-        }
-
-        // Guardar en H2
-        ResumenInscripcion entidad = new ResumenInscripcion();
-        entidad.setEstudiante(resumen.getEstudiante());
-        entidad.setTotal(resumen.getTotal());
-
-        repository.save(entidad);
-
-        // Subir a S3
-        subirResumenAS3(resumen);
-
-        System.out.println("Resumen guardado correctamente.");
     }
 
     public String subirResumenAS3(InscripcionResumenDTO resumen) {
