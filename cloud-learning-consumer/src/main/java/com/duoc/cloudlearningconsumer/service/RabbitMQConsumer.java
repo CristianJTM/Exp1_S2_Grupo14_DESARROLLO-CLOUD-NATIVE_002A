@@ -69,7 +69,8 @@ public class RabbitMQConsumer {
 
         try {
 
-            String nombreArchivo = "resumen_" + System.currentTimeMillis() + ".txt";
+            String nombreArchivo = "resumen_" + resumen.getEstudianteId()
+                    + "_" + System.currentTimeMillis() + ".txt";
 
             File archivo = new File(nombreArchivo);
 
@@ -77,7 +78,8 @@ public class RabbitMQConsumer {
                 writer.write(generarContenidoResumen(resumen));
             }
 
-            String rutaS3 = "resumenes/" + nombreArchivo;
+            String rutaS3 =
+                    "resumenes/" + resumen.getEstudianteId() + "/";
 
             return s3Repository.uploadFile(
                     bucketName,
