@@ -2,6 +2,8 @@ package com.duoc.cloudlearningproducer.config;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.support.converter.DefaultJackson2JavaTypeMapper;
+import org.springframework.amqp.support.converter.Jackson2JavaTypeMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -20,7 +22,20 @@ public class RabbitMQConfig {
 
     @Bean
     public MessageConverter jsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
+
+        Jackson2JsonMessageConverter converter =
+                new Jackson2JsonMessageConverter();
+
+        DefaultJackson2JavaTypeMapper typeMapper =
+                new DefaultJackson2JavaTypeMapper();
+
+        typeMapper.setTrustedPackages("*");
+
+        typeMapper.setTypePrecedence(Jackson2JavaTypeMapper.TypePrecedence.INFERRED);
+
+        converter.setJavaTypeMapper(typeMapper);
+
+        return converter;
     }
 
     @Bean
