@@ -1,7 +1,7 @@
-package com.duoc.cloudlearningplatform.repository;
+package com.duoc.cloudlearningconsumer.repository;
 
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.duoc.cloudlearningplatform.model.Asset;
+import com.duoc.cloudlearningconsumer.model.Asset;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.duoc.cloudlearningplatform.dto;
+package com.duoc.cloudlearningconsumer.dto;
 
 public class AssetDTO {
     private String key;

@@ -1,4 +1,4 @@
-package com.duoc.cloudlearningplatform;
+package com.duoc.cloudlearningconsumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.duoc.cloudlearningplatform.exception;
+package com.duoc.cloudlearningconsumer.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

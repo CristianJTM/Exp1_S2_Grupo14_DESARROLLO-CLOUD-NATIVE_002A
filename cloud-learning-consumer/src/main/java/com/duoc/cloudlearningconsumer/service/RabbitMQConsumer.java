@@ -1,9 +1,9 @@
-package com.duoc.cloudlearningplatform.service;
+package com.duoc.cloudlearningconsumer.service;
 
-import com.duoc.cloudlearningplatform.dto.CursoResumenDTO;
-import com.duoc.cloudlearningplatform.dto.InscripcionResumenDTO;
-import com.duoc.cloudlearningplatform.model.ResumenInscripcion;
-import com.duoc.cloudlearningplatform.repository.ResumenInscripcionRepository;
+import com.duoc.cloudlearningconsumer.dto.CursoResumenDTO;
+import com.duoc.cloudlearningconsumer.dto.InscripcionResumenDTO;
+import com.duoc.cloudlearningconsumer.model.ResumenInscripcion;
+import com.duoc.cloudlearningconsumer.repository.ResumenInscripcionRepository;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

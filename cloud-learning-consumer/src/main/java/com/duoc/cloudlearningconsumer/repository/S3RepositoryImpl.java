@@ -1,4 +1,4 @@
-package com.duoc.cloudlearningplatform.repository;
+package com.duoc.cloudlearningconsumer.repository;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CopyObjectRequest;
@@ -10,7 +10,7 @@ import com.amazonaws.util.IOUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.duoc.cloudlearningplatform.model.Asset;
+import com.duoc.cloudlearningconsumer.model.Asset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

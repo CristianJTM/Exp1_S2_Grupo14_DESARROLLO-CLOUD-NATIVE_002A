@@ -1,6 +1,6 @@
-package com.duoc.cloudlearningplatform.repository;
+package com.duoc.cloudlearningconsumer.repository;
 
-import com.duoc.cloudlearningplatform.model.ResumenInscripcion;
+import com.duoc.cloudlearningconsumer.model.ResumenInscripcion;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ResumenInscripcionRepository

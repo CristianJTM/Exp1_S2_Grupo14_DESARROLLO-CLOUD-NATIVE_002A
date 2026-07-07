@@ -1,4 +1,4 @@
-package com.duoc.cloudlearningplatform;
+package com.duoc.cloudlearningconsumer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

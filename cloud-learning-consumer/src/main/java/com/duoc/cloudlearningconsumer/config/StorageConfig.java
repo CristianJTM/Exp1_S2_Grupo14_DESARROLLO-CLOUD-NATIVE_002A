@@ -1,4 +1,4 @@
-package com.duoc.cloudlearningplatform.config;
+package com.duoc.cloudlearningconsumer.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

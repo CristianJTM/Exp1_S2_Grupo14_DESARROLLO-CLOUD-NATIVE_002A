@@ -1,4 +1,4 @@
-package com.duoc.cloudlearningplatform.model;
+package com.duoc.cloudlearningconsumer.model;
 
 import jakarta.persistence.*;
 

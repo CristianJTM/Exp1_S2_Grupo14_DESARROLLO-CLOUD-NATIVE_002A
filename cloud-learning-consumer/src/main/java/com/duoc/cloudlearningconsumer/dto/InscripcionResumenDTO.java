@@ -1,4 +1,4 @@
-package com.duoc.cloudlearningplatform.dto;
+package com.duoc.cloudlearningconsumer.dto;
 
 import java.util.List;
 
